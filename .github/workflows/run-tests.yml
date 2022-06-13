@@ -26,7 +26,7 @@ jobs:
           branch: dev
           delete-branch: true
           title: '[Example] Update report'
-          base: ${{ github.head_ref }}
+          base: master
           body: |
             Update report
             - Updated with *today's* date

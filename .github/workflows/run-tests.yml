@@ -17,6 +17,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PULL_REQUEST_BRANCH: dev
           PULL_REQUEST_FROM_BRANCH: ${{ github.head_ref }}
-          PULL_REQUEST_TITLE: This is an auto-generated PR
+          PULL_REQUEST_TITLE: This is an auto-generated PR ${{ github.head_ref }} to dev
           PULL_REQUEST_REVIEWERS: ${{ github.actor }}
           PULL_REQUEST_UPDATE: true

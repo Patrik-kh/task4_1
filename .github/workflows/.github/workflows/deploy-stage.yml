@@ -1,0 +1,72 @@
+name: DeployStage
+
+on:
+  push:
+    branches:
+      - stage
+
+jobs:
+
+  test:
+    name: Unit + Integration Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run all tests
+        env:
+          DOCKER_BUILDKIT: '1'
+        run: make run_tests
+
+  flake8:
+    needs: test
+    name: Style code
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run flake8
+        env:
+          DOCKER_BUILDKIT: '1'
+        run: pip install -U pip; pip install flake8; flake8 --count .
+
+  deploy:
+    needs: flake8
+    runs-on: ubuntu-latest
+    steps:
+    - name: Deploy to stage server
+      uses: appleboy/ssh-action@master
+      env:
+        USERNAME: ${{ secrets.DEPLOY_USER }}
+        HOST: ${{ secrets.DEPLOY_ADDR_STAGE }}
+        SCRIPT: |
+          cd /srv/rmi/${{ secrets.CI_PROJECT_NAME }}
+          git fetch
+          git checkout .
+          git pull origin stage
+          {
+            echo 'EMAIL_HOST=${{ secrets.EMAIL_HOST }}'
+            echo 'EMAIL_PORT=${{ secrets.EMAIL_PORT }}'
+            echo 'EMAIL_HOST_USER=${{ secrets.EMAIL_HOST_USER }}'
+            echo 'EMAIL_HOST_PASSWORD=${{ secrets.EMAIL_HOST_PASSWORD }}'
+            echo 'SENDER_ID=${{ secrets.SENDER_ID }}'
+            echo 'SENDER_PASSWORD=${{ secrets.SENDER_PASSWORD }}'
+            echo 'COMPANY_ID=${{ secrets.COMPANY_ID }}'
+            echo 'USER_ID=${{ secrets.USER_ID }}'
+            echo 'USER_PASSWORD=${{ secrets.USER_PASSWORD }}'
+            echo 'GMAPS_API_KEY=${{ secrets.GMAPS_API_KEY }}'
+            echo 'AZURE_ACCOUNT_NAME_STAGE=${{ secrets.AZURE_ACCOUNT_NAME_STAGE }}'
+            echo 'AZURE_ACCOUNT_KEY_STAGE=${{ secrets.AZURE_ACCOUNT_KEY_STAGE }}'
+            echo 'SIGN_UP_ACCESS_KEY=${{ secrets.SIGN_UP_ACCESS_KEY }}'
+            echo 'AZURE_POSTGRES_USER=${{ secrets.AZURE_POSTGRES_USER_STAGE }}'
+            echo 'AZURE_POSTGRES_PASSWORD=${{ secrets.AZURE_POSTGRES_PASSWORD_STAGE }}'
+            echo 'AZURE_POSTGRES_HOST=${{ secrets.AZURE_POSTGRES_HOST_STAGE }}'
+            echo 'AZURE_POSTGRES_PORT=${{ secrets.AZURE_POSTGRES_PORT_STAGE }}'
+            echo 'AZURE_POSTGRES_DB=${{ secrets.AZURE_POSTGRES_DB_STAGE }}'
+            echo 'POWER_BI_TENANT_ID=${{ secrets.POWER_BI_TENANT_ID_STAGE }}'
+            echo 'POWER_BI_CLIENT_ID=${{ secrets.POWER_BI_CLIENT_ID_STAGE}}'
+            echo 'POWER_BI_CLIENT_SECRET=${{ secrets.POWER_BI_CLIENT_SECRET_STAGE }}'
+          } > docker_env.env
+          make docker_stage_stop
+          make docker_stage
+          docker image prune -a --filter "until=24h" -f
+          docker container prune --filter "until=24h" -f
+        KEY: ${{ secrets.DEPLOY_KEY_STAGE }}

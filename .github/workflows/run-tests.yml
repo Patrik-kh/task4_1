@@ -19,9 +19,9 @@ jobs:
           committer: GitHub <noreply@github.com>
           author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
           signoff: false
-          branch: ${{ github.ref }}
+          branch: dev
           title: '[Example] Update report'
-          base: dev
+          base: ${{ github.ref }}
           body: |
             Update report
             - Updated with *today's* date

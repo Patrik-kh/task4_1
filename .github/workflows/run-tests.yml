@@ -7,7 +7,7 @@ on:
       - 'master'
 
 jobs:
-  create-pull-request:
+  createPullRequest:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code

@@ -19,3 +19,4 @@ jobs:
           PULL_REQUEST_FROM_BRANCH: ${{ github.head_ref }}
           PULL_REQUEST_TITLE: This is an auto-generated PR
           PULL_REQUEST_REVIEWERS: ${{ github.actor }}
+          PULL_REQUEST_UPDATE: true

@@ -10,7 +10,8 @@ jobs:
   createPullRequest:
     runs-on: ubuntu-latest
     steps:
-      - name: Create Pull Request
+      - uses: actions/checkout@v3
+      - name: Create Patch
         run: |
           git diff > my.patch
           git checkout dev ;
@@ -18,7 +19,8 @@ jobs:
           git apply my.patch
           git add .
           git push --set-upstream origin lol
-
+    steps:
+      - name: Create Pull Request
         id: cpr
         uses: peter-evans/create-pull-request@v4
         with:

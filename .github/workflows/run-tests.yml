@@ -1,8 +1,7 @@
 name: GitHub Actions create-pull-request
 on:
   pull_request:
-    types:
-      - opened
+    types: [opened, synchronize]
     branches:
       - 'master'
 

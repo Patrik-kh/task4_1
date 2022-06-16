@@ -14,11 +14,13 @@ jobs:
       - uses: actions/checkout@v3
       - name: Create Patch
         run: |
-          git diff > my.patch
+          git fetch
+          git diff master ${{ github.head_ref }} > my.patch
           git checkout dev
           git checkout -b lol
           git apply my.patch
           git add .
+          git commit -am 'lol_lol'
           git push --set-upstream origin lol
 
   CreatePullRequest:

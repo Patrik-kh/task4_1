@@ -12,12 +12,13 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Create Pull Request
-        run: git diff > my.patch
-        run: git checkout dev ;
-        run: git checkout -b lol
-        run: git apply my.patch
-        run: git add .
-        run: git push --set-upstream origin lol
+        run: |
+          git diff > my.patch
+          git checkout dev ;
+          git checkout -b lol
+          git apply my.patch
+          git add .
+          git push --set-upstream origin lol
 
         id: cpr
         uses: peter-evans/create-pull-request@v4

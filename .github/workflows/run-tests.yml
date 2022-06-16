@@ -20,7 +20,7 @@ jobs:
           git diff origin/master origin/f-01 > my.patch
           git checkout dev
           git checkout -b lol
-          git apply my.patch
+          git am -3 < my.patch
           rm my.patch
           git add .
           git commit -am 'lol_lol'

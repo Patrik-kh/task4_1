@@ -17,14 +17,15 @@ jobs:
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
           git fetch
-          git diff origin/master origin/f-01 > my.patch
+
+          git diff 'origin/${{ github.base_ref }}' 'origin/${{ github.head_ref }}' > my.patch
           git checkout dev
-          git checkout -b lol
+          git checkout -b '${{ github.head_ref }}_bot_dev'
           git apply -3 my.patch
           rm my.patch
           git add .
           git commit -am 'lol_lol'
-          git push -f origin lol
+          git push -f origin '${{ github.head_ref }}_bot_dev'
 
   CreatePullRequest:
     needs: CreatePatch
@@ -35,7 +36,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PULL_REQUEST_BRANCH: dev
-          PULL_REQUEST_FROM_BRANCH: lol
+          PULL_REQUEST_FROM_BRANCH: '${{ github.head_ref }}_bot_dev'
           PULL_REQUEST_TITLE: This is an auto-generated PR ${{ github.head_ref }} to dev
           PULL_REQUEST_REVIEWERS: ${{ github.actor }}
           PULL_REQUEST_UPDATE: true

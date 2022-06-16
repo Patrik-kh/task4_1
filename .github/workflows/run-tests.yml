@@ -15,7 +15,7 @@ jobs:
       - name: Create Patch
         run: |
           git fetch
-          git diff origin/master ${{ github.head_ref }} > my.patch
+          git diff origin/master origin/f-01 > my.patch
           git checkout dev
           git checkout -b lol
           git apply my.patch

@@ -8,7 +8,7 @@ on:
 
 jobs:
 
-  Create Patch:
+  CreatePatch:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -21,7 +21,7 @@ jobs:
           git add .
           git push --set-upstream origin lol
 
-  Create Pull Request:
+  CreatePullRequest:
     runs-on: ubuntu-latest
     steps:
       - name: Create Pull Request

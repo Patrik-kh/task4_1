@@ -22,6 +22,7 @@ jobs:
           git push --set-upstream origin lol
 
   CreatePullRequest:
+    needs: CreatePatch
     runs-on: ubuntu-latest
     steps:
       - name: Create Pull Request

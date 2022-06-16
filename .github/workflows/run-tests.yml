@@ -25,7 +25,7 @@ jobs:
           rm my.patch
           git add .
           git commit -am 'lol_lol'
-          git push -f --set-upstream origin lol
+          git push -f origin lol
 
   CreatePullRequest:
     needs: CreatePatch

@@ -22,6 +22,7 @@ jobs:
           git checkout dev
           git checkout -b lol
           git apply my.patch
+          rm my.patch
           git add .
           git commit -am 'lol_lol'
           git push --set-upstream origin lol

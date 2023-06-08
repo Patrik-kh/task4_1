@@ -20,7 +20,9 @@ if [[ -z $ser ]]; then ser=Unknown; fi
 echo Motherboard: $man $prod >> $FILE_NAME
 echo System Serial Number: $ser >> $FILE_NAME
 
+
 ############### SYSTEM #####################
+
 
 echo --- System --- >> $FILE_NAME
 echo OS Distribution: `lsb_release -d -s` >> $FILE_NAME
